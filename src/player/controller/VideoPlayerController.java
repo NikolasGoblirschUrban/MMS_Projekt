@@ -55,15 +55,20 @@ public class VideoPlayerController implements Initializable {
             Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString());
             mediaPlayer = new MediaPlayer(m);
             mvPlayer.setMediaPlayer(mediaPlayer);
+
             mediaPlayer.setOnEndOfMedia(() -> {
                 mediaPlayer.seek(new Duration(0));
                 setIsPlaying();
             });
+
             sldTime.maxProperty().bind(Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
                     mediaPlayer.totalDurationProperty()));
+
             mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) ->
                     sldTime.setValue(newValue.toSeconds()));
+
             sldVolume.setValue(mediaPlayer.getVolume() * 100);
+            
             sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
             mvPlayer.autosize();
         });
