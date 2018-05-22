@@ -1,12 +1,10 @@
 package player.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -60,6 +58,60 @@ public class VideoPlayerController implements Initializable {
                 setIsPlaying();
             }
 
+            RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
+            RadioMenuItem halfSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(0));
+            RadioMenuItem normalSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(1));
+            normalSpeed.setSelected(true);
+
+            doubleSpeed.setOnAction(e -> {
+                if(mediaPlayer != null) {
+                    if (doubleSpeed.isSelected()) {
+                        mediaPlayer.pause();
+                        mediaPlayer.setRate(2);
+                        mediaPlayer.play();
+                        if(halfSpeed.isSelected()) {
+                            halfSpeed.setSelected(false);
+                        }
+                        if(normalSpeed.isSelected()) {
+                            normalSpeed.setSelected(false);
+                        }
+                    }
+                }
+            });
+
+            halfSpeed.setOnAction(e -> {
+                if(mediaPlayer != null) {
+                    if (halfSpeed.isSelected()) {
+                        mediaPlayer.pause();
+                        mediaPlayer.setRate(0.5);
+                        mediaPlayer.play();
+                        if(doubleSpeed.isSelected()) {
+                            doubleSpeed.setSelected(false);
+                        }
+                        if(normalSpeed.isSelected()) {
+                            normalSpeed.setSelected(false);
+                        }
+
+                    }
+                }
+            });
+
+            normalSpeed.setOnAction(e -> {
+                if(mediaPlayer != null) {
+                    if (normalSpeed.isSelected()) {
+                        mediaPlayer.pause();
+                        mediaPlayer.setRate(1);
+                        mediaPlayer.play();
+                        if (halfSpeed.isSelected()) {
+                            halfSpeed.setSelected(false);
+                        }
+                        if (doubleSpeed.isSelected()) {
+                            doubleSpeed.setSelected(false);
+                        }
+                    }
+                }
+            });
+
             fileChooser.setTitle("Chose Video");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
             selectedFile = fileChooser.showOpenDialog(null);
@@ -67,6 +119,13 @@ public class VideoPlayerController implements Initializable {
             Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString());
             mediaPlayer = new MediaPlayer(m);
             mvPlayer.setMediaPlayer(mediaPlayer);
+           // mvPlayer.autosize();
+            mvPlayer.setPreserveRatio(true);
+
+            DoubleProperty width = mvPlayer.fitWidthProperty();
+            DoubleProperty height = mvPlayer.fitHeightProperty();
+            width.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "width"));
+            height.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "height"));
 
             mediaPlayer.setOnEndOfMedia(() -> {
                 mediaPlayer.seek(new Duration(0));
@@ -82,7 +141,7 @@ public class VideoPlayerController implements Initializable {
             sldVolume.setValue(mediaPlayer.getVolume() * 100);
 
             sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
-            mvPlayer.autosize();
+
         });
 
         mbMenu.getMenus().get(0).getItems().get(1).setOnAction(event -> {

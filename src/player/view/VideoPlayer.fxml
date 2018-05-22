@@ -27,15 +27,14 @@
                         <MenuItem mnemonicParsing="false" text="Export Frames" />
                          </items>
                       </Menu>
-                      <Menu mnemonicParsing="false" text="Settings">
-                         <items>
-                             <Menu mnemonicParsing="false" text="Direction">
-                                <items>
-                                    <RadioMenuItem mnemonicParsing="false" text="Backwards" />
-                                </items>
-                             </Menu>
-                         </items>
-                      </Menu>
+                       <Menu mnemonicParsing="false" text="Speed">
+                          <items>
+                        <RadioMenuItem mnemonicParsing="false" text="0.5x" />
+                        <RadioMenuItem mnemonicParsing="false" text="1x" />
+                              <RadioMenuItem mnemonicParsing="false" text="2x" />
+                          </items>
+                       </Menu>
+                      <Menu mnemonicParsing="false" text="Settings" />
                   </menus>
                </MenuBar>
            </top>
@@ -59,12 +58,12 @@
                       <Slider fx:id="sldTime" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" nodeOrientation="LEFT_TO_RIGHT" onDragDone="#handleTimeChange" onMouseClicked="#handleTimeChange" onTouchMoved="#handleTimeChange" />
                       <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                          <children>
-                             <ToggleButton fx:id="btnMute" mnemonicParsing="false" onAction="#handleMute" text="Mute" textAlignment="CENTER">
+                             <ToggleButton fx:id="btnMute" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMute" text="Mute" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                      <Insets right="10.0" />
                                  </HBox.margin>
                              </ToggleButton>
-                             <Button fx:id="btnPlay" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePlay" text="Play" textAlignment="CENTER" />
+                             <Button fx:id="btnPlay" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePlay" style="-fx-pref-width: 80;" text="Play" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
                              <Slider fx:id="sldVolume" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="16.0" prefWidth="79.0" value="75.0">
                                  <padding>
                                      <Insets left="10.0" />
