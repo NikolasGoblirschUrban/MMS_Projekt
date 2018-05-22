@@ -3,14 +3,16 @@ package player.controller;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
-import jdk.nashorn.internal.runtime.options.Option;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +47,11 @@ public class VideoPlayerController implements Initializable {
         mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File directory = directoryChooser.showDialog(null);
-            capturer = new CaptureFrames(selectedFile, directory);
-            Thread captureThread = new Thread(new CaptureRunnable(capturer));
-            captureThread.start();
+            if(directory != null) {
+                capturer = new CaptureFrames(selectedFile, directory);
+                Thread captureThread = new Thread(new CaptureRunnable(capturer));
+                captureThread.start();
+            }
         });
 
         mbMenu.getMenus().get(0).getItems().get(0).setOnAction(event -> {

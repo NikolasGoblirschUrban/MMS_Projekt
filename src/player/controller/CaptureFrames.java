@@ -12,7 +12,7 @@ import java.io.File;
 
 public class CaptureFrames extends MediaListenerAdapter
 {
-    private static final double SECONDS_BETWEEN_FRAMES = 5;
+    private static final double SECONDS_BETWEEN_FRAMES = 15;
 
 
     private static final long MICRO_SECONDS_BETWEEN_FRAMES =
