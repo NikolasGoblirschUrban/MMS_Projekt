@@ -3,15 +3,14 @@ package player.controller;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import jdk.nashorn.internal.runtime.options.Option;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +23,7 @@ public class VideoPlayerController implements Initializable {
     private boolean isPlaying = false;
     private MediaPlayer mediaPlayer;
     private File selectedFile;
+    private CaptureFrames capturer;
 
     @FXML
     private MediaView mvPlayer;
@@ -41,6 +41,14 @@ public class VideoPlayerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FileChooser fileChooser = new FileChooser();
+
+        mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File directory = directoryChooser.showDialog(null);
+            capturer = new CaptureFrames(selectedFile, directory);
+            Thread captureThread = new Thread(new CaptureRunnable(capturer));
+            captureThread.start();
+        });
 
         mbMenu.getMenus().get(0).getItems().get(0).setOnAction(event -> {
             if (mediaPlayer != null) {
@@ -68,7 +76,7 @@ public class VideoPlayerController implements Initializable {
                     sldTime.setValue(newValue.toSeconds()));
 
             sldVolume.setValue(mediaPlayer.getVolume() * 100);
-            
+
             sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
             mvPlayer.autosize();
         });

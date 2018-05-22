@@ -1,66 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.media.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.media.MediaView?>
-<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="player.controller.VideoPlayerController">
 
-    <BorderPane AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                AnchorPane.topAnchor="0.0">
-        <top>
-            <MenuBar fx:id="mbMenu" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="TOP_CENTER">
-                <Menu mnemonicParsing="false" text="File">
-                    <MenuItem mnemonicParsing="false" text="Open"/>
-                    <MenuItem mnemonicParsing="false" text="Save"/>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <MenuItem mnemonicParsing="false" text="Add Subtitles"/>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Settings">
-                    <Menu mnemonicParsing="false" text="Direction">
-                        <RadioMenuItem mnemonicParsing="false" text="Backwards"/>
-                    </Menu>
-                </Menu>
-            </MenuBar>
-        </top>
-        <center>
-            <MediaView fx:id="mvPlayer" onMouseClicked="#handleState">
-                <BorderPane.margin>
-                    <Insets/>
-                </BorderPane.margin>
-            </MediaView>
-        </center>
-        <bottom>
-            <GridPane BorderPane.alignment="TOP_CENTER">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES"/>
-                </columnConstraints>
-                <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES"/>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                </rowConstraints>
-                <Slider fx:id="sldTime" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1"
-                        nodeOrientation="LEFT_TO_RIGHT" onDragDone="#handleTimeChange"
-                        onMouseClicked="#handleTimeChange" onTouchMoved="#handleTimeChange"/>
-                <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                    <ToggleButton fx:id="btnMute" mnemonicParsing="false" onAction="#handleMute" text="Mute"
-                                  textAlignment="CENTER">
-                        <HBox.margin>
-                            <Insets right="10.0"/>
-                        </HBox.margin>
-                    </ToggleButton>
-                    <Button fx:id="btnPlay" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity"
-                            mnemonicParsing="false" onAction="#handlePlay" text="Play" textAlignment="CENTER"/>
-                    <Slider fx:id="sldVolume" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1"
-                            prefHeight="16.0" prefWidth="79.0" value="75.0">
-                        <padding>
-                            <Insets left="10.0"/>
-                        </padding>
-                    </Slider>
-                </HBox>
-            </GridPane>
-        </bottom>
-    </BorderPane>
+<AnchorPane style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="player.controller.VideoPlayerController">
+   <children>
+   
+       <BorderPane AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <top>
+               <MenuBar fx:id="mbMenu" nodeOrientation="LEFT_TO_RIGHT" BorderPane.alignment="TOP_CENTER">
+                  <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                         <items>
+                             <MenuItem mnemonicParsing="false" text="Open" />
+                             <MenuItem mnemonicParsing="false" text="Save" />
+                         </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Edit">
+                         <items>
+                             <MenuItem mnemonicParsing="false" text="Add Subtitles" />
+                        <MenuItem mnemonicParsing="false" text="Export Frames" />
+                         </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Settings">
+                         <items>
+                             <Menu mnemonicParsing="false" text="Direction">
+                                <items>
+                                    <RadioMenuItem mnemonicParsing="false" text="Backwards" />
+                                </items>
+                             </Menu>
+                         </items>
+                      </Menu>
+                  </menus>
+               </MenuBar>
+           </top>
+           <center>
+               <MediaView fx:id="mvPlayer" onMouseClicked="#handleState">
+                   <BorderPane.margin>
+                       <Insets />
+                   </BorderPane.margin>
+               </MediaView>
+           </center>
+           <bottom>
+               <GridPane BorderPane.alignment="TOP_CENTER">
+                   <columnConstraints>
+                       <ColumnConstraints hgrow="SOMETIMES" />
+                   </columnConstraints>
+                   <rowConstraints>
+                       <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                   </rowConstraints>
+                  <children>
+                      <Slider fx:id="sldTime" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" nodeOrientation="LEFT_TO_RIGHT" onDragDone="#handleTimeChange" onMouseClicked="#handleTimeChange" onTouchMoved="#handleTimeChange" />
+                      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                         <children>
+                             <ToggleButton fx:id="btnMute" mnemonicParsing="false" onAction="#handleMute" text="Mute" textAlignment="CENTER">
+                                 <HBox.margin>
+                                     <Insets right="10.0" />
+                                 </HBox.margin>
+                             </ToggleButton>
+                             <Button fx:id="btnPlay" alignment="CENTER" contentDisplay="CENTER" minWidth="-Infinity" mnemonicParsing="false" onAction="#handlePlay" text="Play" textAlignment="CENTER" />
+                             <Slider fx:id="sldVolume" blockIncrement="1.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="16.0" prefWidth="79.0" value="75.0">
+                                 <padding>
+                                     <Insets left="10.0" />
+                                 </padding>
+                             </Slider>
+                         </children>
+                      </HBox>
+                  </children>
+               </GridPane>
+           </bottom>
+       </BorderPane>
+   </children>
 </AnchorPane>
