@@ -1,10 +1,12 @@
 package player.controller;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -24,6 +26,7 @@ public class VideoPlayerController implements Initializable {
     private MediaPlayer mediaPlayer;
     private File selectedFile;
     private CaptureFrames capturer;
+    private boolean isMute;
 
     @FXML
     private MediaView mvPlayer;
@@ -34,13 +37,21 @@ public class VideoPlayerController implements Initializable {
     @FXML
     private Slider sldTime;
     @FXML
-    private ToggleButton btnMute;
+    private Button btnMute;
     @FXML
     private Slider sldVolume;
+    @FXML
+    private ProgressBar pbTime;
+    @FXML
+    private AnchorPane apScene;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FileChooser fileChooser = new FileChooser();
+
+        pbTime.prefWidthProperty().bind(apScene.widthProperty());
+
+        isMute = false;
 
         mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -57,61 +68,6 @@ public class VideoPlayerController implements Initializable {
                 mediaPlayer.dispose();
                 setIsPlaying();
             }
-
-            RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
-            RadioMenuItem halfSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(0));
-            RadioMenuItem normalSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(1));
-            normalSpeed.setSelected(true);
-
-            doubleSpeed.setOnAction(e -> {
-                if(mediaPlayer != null) {
-                    if (doubleSpeed.isSelected()) {
-                        mediaPlayer.pause();
-                        mediaPlayer.setRate(2);
-                        mediaPlayer.play();
-                        if(halfSpeed.isSelected()) {
-                            halfSpeed.setSelected(false);
-                        }
-                        if(normalSpeed.isSelected()) {
-                            normalSpeed.setSelected(false);
-                        }
-                    }
-                }
-            });
-
-            halfSpeed.setOnAction(e -> {
-                if(mediaPlayer != null) {
-                    if (halfSpeed.isSelected()) {
-                        mediaPlayer.pause();
-                        mediaPlayer.setRate(0.5);
-                        mediaPlayer.play();
-                        if(doubleSpeed.isSelected()) {
-                            doubleSpeed.setSelected(false);
-                        }
-                        if(normalSpeed.isSelected()) {
-                            normalSpeed.setSelected(false);
-                        }
-
-                    }
-                }
-            });
-
-            normalSpeed.setOnAction(e -> {
-                if(mediaPlayer != null) {
-                    if (normalSpeed.isSelected()) {
-                        mediaPlayer.pause();
-                        mediaPlayer.setRate(1);
-                        mediaPlayer.play();
-                        if (halfSpeed.isSelected()) {
-                            halfSpeed.setSelected(false);
-                        }
-                        if (doubleSpeed.isSelected()) {
-                            doubleSpeed.setSelected(false);
-                        }
-                    }
-                }
-            });
-
             fileChooser.setTitle("Chose Video");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
             selectedFile = fileChooser.showOpenDialog(null);
@@ -119,7 +75,6 @@ public class VideoPlayerController implements Initializable {
             Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString());
             mediaPlayer = new MediaPlayer(m);
             mvPlayer.setMediaPlayer(mediaPlayer);
-           // mvPlayer.autosize();
             mvPlayer.setPreserveRatio(true);
 
             DoubleProperty width = mvPlayer.fitWidthProperty();
@@ -132,16 +87,21 @@ public class VideoPlayerController implements Initializable {
                 setIsPlaying();
             });
 
-            sldTime.maxProperty().bind(Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
-                    mediaPlayer.totalDurationProperty()));
+            DoubleBinding timeBinding = Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
+                    mediaPlayer.totalDurationProperty());
 
-            mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) ->
-                    sldTime.setValue(newValue.toSeconds()));
+            sldTime.maxProperty().bind(timeBinding);
+
+            mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                        sldTime.setValue(newValue.toSeconds());
+                        pbTime.setProgress(newValue.toSeconds() / timeBinding.doubleValue());
+                    });
 
             sldVolume.setValue(mediaPlayer.getVolume() * 100);
 
             sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
 
+            pbTime.setProgress(0);
         });
 
         mbMenu.getMenus().get(0).getItems().get(1).setOnAction(event -> {
@@ -153,6 +113,53 @@ public class VideoPlayerController implements Initializable {
                 e.printStackTrace();
             }
 
+        });
+        RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
+        RadioMenuItem halfSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(0));
+        RadioMenuItem normalSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(1));
+        normalSpeed.setSelected(true);
+
+        doubleSpeed.setOnAction(e -> {
+            if(mediaPlayer != null) {
+                if (doubleSpeed.isSelected()) {
+                    mediaPlayer.setRate(2);
+                    if(halfSpeed.isSelected()) {
+                        halfSpeed.setSelected(false);
+                    }
+                    if(normalSpeed.isSelected()) {
+                        normalSpeed.setSelected(false);
+                    }
+                }
+            }
+        });
+
+        halfSpeed.setOnAction(e -> {
+            if(mediaPlayer != null) {
+                if (halfSpeed.isSelected()) {
+                    mediaPlayer.setRate(0.5);
+                    if(doubleSpeed.isSelected()) {
+                        doubleSpeed.setSelected(false);
+                    }
+                    if(normalSpeed.isSelected()) {
+                        normalSpeed.setSelected(false);
+                    }
+
+                }
+            }
+        });
+
+        normalSpeed.setOnAction(e -> {
+            if(mediaPlayer != null) {
+                if (normalSpeed.isSelected()) {
+                    mediaPlayer.setRate(1);
+                    if (halfSpeed.isSelected()) {
+                        halfSpeed.setSelected(false);
+                    }
+                    if (doubleSpeed.isSelected()) {
+                        doubleSpeed.setSelected(false);
+                    }
+                }
+            }
         });
 
     }
@@ -170,18 +177,26 @@ public class VideoPlayerController implements Initializable {
             if (isPlaying) {
                 this.isPlaying = false;
                 mediaPlayer.pause();
-                btnPlay.setText("Play");
+                btnPlay.setId("playButton");
             } else {
                 this.isPlaying = true;
                 mediaPlayer.play();
-                btnPlay.setText("Pause");
+                btnPlay.setId("pauseButton");
             }
         }
     }
 
     public void handleMute() {
         if (mediaPlayer != null) {
-            mediaPlayer.setMute(btnMute.isSelected());
+            if(isMute){
+                mediaPlayer.setMute(false);
+                isMute = false;
+                btnMute.setId("muteButton");
+            } else {
+                mediaPlayer.setMute(true);
+                isMute = true;
+                btnMute.setId("unmuteButton");
+            }
         }
     }
 

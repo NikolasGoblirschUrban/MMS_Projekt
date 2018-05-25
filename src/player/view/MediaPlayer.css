@@ -1,0 +1,81 @@
+#playButton {
+    -fx-background-image: url(../icons/play.png);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 60 60;
+    -fx-pref-height: 65;
+    -fx-pref-width: 65;
+    -fx-background-radius: 100%;
+    -fx-border-color: red;
+    -fx-border-radius: 100%;
+
+}
+
+#pauseButton {
+    -fx-background-image: url(../icons/pause.png);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 65 65;
+    -fx-pref-height: 65;
+    -fx-pref-width: 65;
+    -fx-background-radius: 100%;
+    -fx-border-color: red;
+    -fx-border-radius: 100%;
+
+}
+
+#muteButton {
+    -fx-background-image: url(../icons/unmute.png);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35 35;
+    -fx-pref-height: 40;
+    -fx-pref-width: 40;
+    -fx-background-radius: 50%;
+    -fx-border-color: red;
+    -fx-border-radius: 100%;
+
+
+}
+
+#unmuteButton {
+    -fx-background-image: url(../icons/mute.png);
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 35 35;
+    -fx-pref-height: 40;
+    -fx-pref-width: 40;
+    -fx-background-radius: 50%;
+    -fx-border-color: red;
+    -fx-border-radius: 100%;
+
+}
+
+.slider .thumb
+{
+    -fx-background-color: red;
+    -fx-border-color: black;
+    -fx-border-radius: 100%   /* -fx-control-inner-background: red;*/
+}
+
+#timeSlider .track {
+    -fx-background-color:null;  /* Hide the track */
+    -fx-background-insets: 1 0 -1 0, 0, 1;
+    -fx-background-radius: 2.5, 2.5, 1.5;
+    -fx-padding: 0.208333em; /* 2.5 */
+}
+
+.progress-bar .bar {
+    -fx-padding: 3px;
+    -fx-background-insets: 0;
+    -fx-background-color: red;
+}
+
+.menu:hover, .menu:showing, .menu-item:hover, .menu-item:showing, .menu-item:focused {
+    -fx-background-color: red;
+}
+
+.grid-pane
+
+
+

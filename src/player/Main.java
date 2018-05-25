@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -11,9 +12,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("view/VideoPlayer.fxml"));
+        primaryStage.getIcons().add(new Image("player/icons/icon.jpeg"));
         primaryStage.setScene(new Scene(root));
-        primaryStage.setTitle("Phritten Röhre - Steilster Video Player");
+        primaryStage.setTitle("Java Media Player");
         primaryStage.setFullScreen(true);
+
         primaryStage.show();
     }
 
