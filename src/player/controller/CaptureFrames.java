@@ -26,7 +26,7 @@ public class CaptureFrames extends MediaListenerAdapter
 
     private File outDirectory;
 
-    private int count;
+    private int frameCount;
 
     private boolean isDone;
 
@@ -34,7 +34,7 @@ public class CaptureFrames extends MediaListenerAdapter
     {
         isDone = false;
         this.inFile = inFile;
-        count = 0;
+        frameCount = 0;
         this.outDirectory = outDirectory;
     }
 
@@ -69,9 +69,9 @@ public class CaptureFrames extends MediaListenerAdapter
             {
 
                 File file = new File(outDirectory.getAbsolutePath() +
-                        "/frame" + count + ".png");
+                        "/frame" + frameCount + ".png");
 
-                count++;
+                frameCount++;
 
                 ImageIO.write(event.getImage(), "png", file);
 
