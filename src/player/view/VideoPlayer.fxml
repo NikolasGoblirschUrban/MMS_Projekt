@@ -33,6 +33,10 @@
                             <items>
                                 <MenuItem mnemonicParsing="false" text="Add Subtitles" />
                                 <MenuItem mnemonicParsing="false" text="Export Frames" />
+                        <MenuItem mnemonicParsing="false" text="Edit Audio" />
+                        <MenuItem mnemonicParsing="false" text="Reverse Video" />
+                        <MenuItem mnemonicParsing="false" text="Cut Video" />
+                        <MenuItem mnemonicParsing="false" text="Add Video Part" />
                             </items>
                          </Menu>
                          <Menu mnemonicParsing="false" text="Speed">

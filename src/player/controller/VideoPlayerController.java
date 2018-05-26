@@ -118,6 +118,23 @@ public class VideoPlayerController implements Initializable {
             }
 
         });
+
+        mbMenu.getMenus().get(1).getItems().get(0).setOnAction(event -> {
+            /*TODO Lummi: Add your Code for Subtitles here!*/
+        });
+        mbMenu.getMenus().get(1).getItems().get(2).setOnAction(event -> {
+            /*TODO Lummi: Add your Code for Audio here!*/
+        });
+        mbMenu.getMenus().get(1).getItems().get(3).setOnAction(event -> {
+            /*TODO Kastner:: Add your Code for Reverse here!*/
+        });
+        mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
+            /*TODO Hansi:: Add your Code for Cutting the Video here!*/
+        });
+        mbMenu.getMenus().get(1).getItems().get(5).setOnAction(event -> {
+            /*TODO Hansi:: Add your Code for Adding Video Part here!*/
+        });
+
         RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
         RadioMenuItem halfSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(0));
         RadioMenuItem normalSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(1));
