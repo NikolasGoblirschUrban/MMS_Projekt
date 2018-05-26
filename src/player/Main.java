@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("view/VideoPlayer.fxml"));
         primaryStage.getIcons().add(new Image("player/icons/icon.jpeg"));
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.setTitle("Java Media Player");
         primaryStage.setFullScreen(true);
 
