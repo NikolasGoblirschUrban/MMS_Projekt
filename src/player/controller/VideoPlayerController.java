@@ -27,6 +27,7 @@ public class VideoPlayerController implements Initializable {
     private File selectedFile;
     private CaptureFrames capturer;
     private boolean isMute;
+    private double currentRate;
 
     @FXML
     private MediaView mvPlayer;
@@ -52,6 +53,7 @@ public class VideoPlayerController implements Initializable {
         pbTime.prefWidthProperty().bind(apScene.widthProperty());
 
         isMute = false;
+        currentRate = 1;
 
         mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -102,6 +104,8 @@ public class VideoPlayerController implements Initializable {
             sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
 
             pbTime.setProgress(0);
+
+            setIsPlaying();
         });
 
         mbMenu.getMenus().get(0).getItems().get(1).setOnAction(event -> {
@@ -122,6 +126,7 @@ public class VideoPlayerController implements Initializable {
         doubleSpeed.setOnAction(e -> {
             if(mediaPlayer != null) {
                 if (doubleSpeed.isSelected()) {
+                    this.currentRate = 2;
                     mediaPlayer.setRate(2);
                     if(halfSpeed.isSelected()) {
                         halfSpeed.setSelected(false);
@@ -137,6 +142,7 @@ public class VideoPlayerController implements Initializable {
             if(mediaPlayer != null) {
                 if (halfSpeed.isSelected()) {
                     mediaPlayer.setRate(0.5);
+                    this.currentRate = 0.5;
                     if(doubleSpeed.isSelected()) {
                         doubleSpeed.setSelected(false);
                     }
@@ -152,6 +158,7 @@ public class VideoPlayerController implements Initializable {
             if(mediaPlayer != null) {
                 if (normalSpeed.isSelected()) {
                     mediaPlayer.setRate(1);
+                    this.currentRate = 1;
                     if (halfSpeed.isSelected()) {
                         halfSpeed.setSelected(false);
                     }
@@ -180,6 +187,7 @@ public class VideoPlayerController implements Initializable {
                 btnPlay.setId("playButton");
             } else {
                 this.isPlaying = true;
+                mediaPlayer.setRate(currentRate);
                 mediaPlayer.play();
                 btnPlay.setId("pauseButton");
             }
