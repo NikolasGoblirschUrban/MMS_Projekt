@@ -20,7 +20,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        this.primaryStage = primaryStage;
+        Main.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/VideoPlayer.fxml"));
         Parent root = loader.load();
 
