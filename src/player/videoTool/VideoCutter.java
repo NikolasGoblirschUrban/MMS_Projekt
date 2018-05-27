@@ -1,4 +1,5 @@
 package player.videoTool;
+
 import com.xuggle.mediatool.*;
 
 public class VideoCutter {
@@ -89,7 +90,19 @@ public class VideoCutter {
         VideoCutBegin(videoPath, time, videoCut);
         return videoCut;
     }
+    /**
+     * schneidet ein mittlers Stück heraus
+     * @param videoPath Videopfad
+     * @param time1     erste Zeit in ms
+     * @param time2     zweite Zeit in ms
+     * @return
+     */
 
+    public static void VideoCut(String videoPath, long time1, long time2, String outputFile){
+        String videoCut = "";
+        videoCut = VideoCutBegin(videoPath,time2);
+        VideoCutEnd(videoCut, time1, outputFile);
+    }
     /**
      *
      * @param videoPath     Videopfad

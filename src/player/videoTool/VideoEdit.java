@@ -78,6 +78,18 @@ public class VideoEdit {
        return VideoCutter.VideoCut(videoPath, time1, time2);
     }
 
+
+    /**
+     * schneidet ein mittlers Stück heraus
+     * @param videoPath Videopfad
+     * @param time1     erste Zeit in ms
+     * @param time2     zweite Zeit in ms
+     * @return
+     */
+    public static void VideoCut(String videoPath, long time1, long time2, String outputFile){
+        VideoCutter.VideoCut(videoPath, time1, time2, outputFile);
+    }
+
     /**
      *
      * @param videoPath Videopfad

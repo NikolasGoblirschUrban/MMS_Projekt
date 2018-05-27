@@ -30,16 +30,16 @@ public class ResizeVideo {
         // create custom listeners
         MyVideoListener myVideoListener = new MyVideoListener(size.getWidth(), size.getHigh());
         Resizer resizer = new Resizer(size.getWidth(), size.getHigh());
-        System.out.println("1");
+
         // reader
         IMediaReader reader = ToolFactory.makeReader(videoPath);
         reader.addListener(resizer);
-        System.out.println("1");
+
         // writer
         IMediaWriter writer = ToolFactory.makeWriter(videoOutput, reader);
         resizer.addListener(writer);
         writer.addListener(myVideoListener);
-        System.out.println("1");
+
         // show video when encoding
         //   reader.addListener(ToolFactory.makeViewer(true));
 

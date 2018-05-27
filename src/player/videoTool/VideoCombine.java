@@ -21,7 +21,7 @@ public class VideoCombine {
         String dest = destinationUrl.replace(".mp4", "-part1.mp4");
         combineTtwoEqualVideos(sourceUrl1, sourceUrl2, dest);
         combineTtwoEqualVideos(dest, sourceUrl3,destinationUrl);
-        System.out.println("finished merging three");
+
     }
 
     /**
@@ -57,7 +57,7 @@ public class VideoCombine {
         while(reader2.readPacket() == null);
 
         writer.close();
-        System.out.println("finished merging two");
+
     }
 
     /**
@@ -74,7 +74,7 @@ public class VideoCombine {
         String resizeString1 = videoPath1;
         String resizeString2 = videoPath2;
 
-        System.out.println(resizeString1);
+        //System.out.println(resizeString1);
         VideoData videoData1 = new VideoData(videoPath1);
         VideoData videoData2 = new VideoData(videoPath2);
         VideoSize maxSize = new VideoSize(compairSize(videoData1, videoData2));

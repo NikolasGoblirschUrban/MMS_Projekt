@@ -38,7 +38,7 @@ public class MediaConcatenator extends MediaToolAdapter
         mNextAudio = samples.getNextPts();
         if(toggleChangeTimestamp) {
             newTimeStamp = newTimeStamp + changeTimestamp;
-            System.out.println("Audio:" + originalTimeStamp + " = " + newTimeStamp + " " + changeTimestamp);
+            //System.out.println("Audio:" + originalTimeStamp + " = " + newTimeStamp + " " + changeTimestamp);
         }
 
         samples.setTimeStamp(newTimeStamp);
@@ -58,7 +58,7 @@ public class MediaConcatenator extends MediaToolAdapter
         mNextVideo = originalTimeStamp + 1;
         if(toggleChangeTimestamp) {
             newTimeStamp = originalTimeStamp + changeTimestamp;
-            System.out.println("Video:" +newTimeStamp + " = " + originalTimeStamp + " " + changeTimestamp);
+            //System.out.println("Video:" +newTimeStamp + " = " + originalTimeStamp + " " + changeTimestamp);
         }
 
         picture.setTimeStamp(newTimeStamp);
