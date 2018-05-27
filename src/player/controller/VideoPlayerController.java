@@ -176,7 +176,7 @@ public class VideoPlayerController implements Initializable {
             /*TODO Kastner:: Add your Code for Reverse here!*/
         });
       
-        mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
+        mbMenu.getMenus().get(1).getItems().get(7).setOnAction(event -> {
             mediaPlayer.pause();
             fileChooser.setTitle("Choose Savefile");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
@@ -184,7 +184,7 @@ public class VideoPlayerController implements Initializable {
 
             DialogWindowCutVideo dialog = new DialogWindowCutVideo(selectedFile.getAbsolutePath(),  saveFile.getAbsolutePath());
         });
-        mbMenu.getMenus().get(1).getItems().get(5).setOnAction(event -> {
+        mbMenu.getMenus().get(1).getItems().get(8).setOnAction(event -> {
             mediaPlayer.pause();
             fileChooser.setTitle("Choose Savefile");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
