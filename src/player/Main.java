@@ -23,7 +23,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/VideoPlayer.fxml"));
         Parent root = loader.load();
 
-        primaryStage.getIcons().add(new Image("player/icons/icon.jpeg"));
+        primaryStage.getIcons().add(new Image("player/icons/icon.jpeg")); //Player icon
         primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.setTitle("Java Media Player");
         primaryStage.setFullScreen(true);

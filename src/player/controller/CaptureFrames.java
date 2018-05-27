@@ -12,7 +12,7 @@ import java.io.File;
 
 public class CaptureFrames extends MediaListenerAdapter
 {
-    private static final double SECONDS_BETWEEN_FRAMES = 15;
+    private static final double SECONDS_BETWEEN_FRAMES = 15; //How many frames
 
 
     private static final long MICRO_SECONDS_BETWEEN_FRAMES =
@@ -41,10 +41,10 @@ public class CaptureFrames extends MediaListenerAdapter
     public void start() {
         IMediaReader reader = ToolFactory.makeReader(inFile.getPath());
         reader.setBufferedImageTypeToGenerate(BufferedImage.TYPE_3BYTE_BGR);
-        reader.addListener(this);
+        reader.addListener(this); //Listener when Frame occurs, calls method onVideoPicture()
 
         while (reader.readPacket() == null)
-            do {} while(false);
+            do {} while(false); //Get all Packets
         isDone = true;
 
     }
@@ -69,16 +69,16 @@ public class CaptureFrames extends MediaListenerAdapter
             {
 
                 File file = new File(outDirectory.getAbsolutePath() +
-                        "/frame" + frameCount + ".png");
+                        "/frame" + frameCount + ".png"); //Create Frame File
 
                 frameCount++;
 
-                ImageIO.write(event.getImage(), "png", file);
+                ImageIO.write(event.getImage(), "png", file); //Save Frame
 
                 double seconds = ((double)event.getTimeStamp())
                         / Global.DEFAULT_PTS_PER_SECOND;
                 System.out.printf("at elapsed time of %6.3f seconds wrote: %s\n",
-                        seconds, file);
+                        seconds, file); //For testing
 
                 mLastPtsWrite += MICRO_SECONDS_BETWEEN_FRAMES;
             }

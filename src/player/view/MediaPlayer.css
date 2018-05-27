@@ -55,14 +55,14 @@
 {
     -fx-background-color: red;
     -fx-border-color: black;
-    -fx-border-radius: 100%   /* -fx-control-inner-background: red;*/
+    -fx-border-radius: 100%
 }
 
 #timeSlider .track {
-    -fx-background-color:null;  /* Hide the track */
+    -fx-background-color:null;  /*Hide the track */
     -fx-background-insets: 1 0 -1 0, 0, 1;
     -fx-background-radius: 2.5, 2.5, 1.5;
-    -fx-padding: 0.208333em; /* 2.5 */
+    -fx-padding: 0.208333em; 
 }
 
 .progress-bar .bar {
