@@ -56,7 +56,7 @@ public class Main extends Application {
         audioController.setVideoFile(videofile);
 
         dialogStage.showAndWait();
-        return audioController.getVideoFile();
+        return audioController.getNewVideoFile();
     }
 
     public void showSubtitles(String type) throws IOException {

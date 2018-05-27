@@ -48,8 +48,8 @@
                         <Insets right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Button fx:id="btwSubmit" mnemonicParsing="false" text="Submit" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <Button fx:id="btwBrowse" mnemonicParsing="false" text="Browse" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Button fx:id="btwSubmit" mnemonicParsing="false" onAction="#handleSubmit" text="Submit" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <Button fx:id="btwBrowse" mnemonicParsing="false" onAction="#handleBrowse" text="Browse" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Label text="Musicfile:" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" />

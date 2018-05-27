@@ -20,6 +20,7 @@ public class AudioController implements Initializable{
     private File musicFile;
     private AudioEditor audioEditor;
     private File videoFile;
+    private File newVideoFile;
 
     @FXML
     private TextField txtStartPosition;
@@ -37,8 +38,8 @@ public class AudioController implements Initializable{
         audioEditor = new AudioEditor();
     }
 
-    public File getVideoFile() {
-        return videoFile;
+    public File getNewVideoFile() {
+        return newVideoFile;
     }
 
     public void setVideoFile(File videoFile) {
@@ -56,6 +57,6 @@ public class AudioController implements Initializable{
 
 
     public void handleSubmit(){
-
+        newVideoFile = audioEditor.deleteAudio(videoFile);
     }
 }
