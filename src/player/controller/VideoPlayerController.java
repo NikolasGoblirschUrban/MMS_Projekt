@@ -30,6 +30,7 @@ public class VideoPlayerController implements Initializable {
     private File saveFile;
     private File selectedsecondFile;
     private CaptureFrames capturer;
+    private ReverseVideo reverser;
     private boolean isMute;
     private double currentRate;
     private Main main;
@@ -138,7 +139,13 @@ public class VideoPlayerController implements Initializable {
             }
         });
         mbMenu.getMenus().get(1).getItems().get(6).setOnAction(event -> {
-            /*TODO Kastner:: Add your Code for Reverse here!*/
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            File directory = directoryChooser.showDialog(null);
+            if(directory != null) {
+                reverser = new ReverseVideo(selectedFile, directory, (int)mediaPlayer.getTotalDuration().toSeconds());
+                Thread reverseThread = new Thread(new ReverseRunnable(reverser));
+                reverseThread.start();
+            }
         });
 
         mbMenu.getMenus().get(1).getItems().get(7).setOnAction(event -> {
