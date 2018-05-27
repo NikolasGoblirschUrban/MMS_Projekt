@@ -18,7 +18,6 @@ public class CaptureRunnable implements Runnable{
                 alert.setHeaderText("Capturing Frames Succeeded");
                 alert.setContentText("Frames were Stored in choosen directory!");
                 alert.showAndWait();
-
             });
         }
     }

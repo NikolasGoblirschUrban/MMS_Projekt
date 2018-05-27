@@ -78,31 +78,10 @@ public class VideoPlayerController implements Initializable {
 
             setMedia();
 
-            DoubleProperty width = mvPlayer.fitWidthProperty();
-            DoubleProperty height = mvPlayer.fitHeightProperty();
-            width.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "width"));
-            height.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "height"));
-
             mediaPlayer.setOnEndOfMedia(() -> {
                 mediaPlayer.seek(new Duration(0));
                 setIsPlaying();
             });
-
-            DoubleBinding timeBinding = Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
-                    mediaPlayer.totalDurationProperty());
-
-            sldTime.maxProperty().bind(timeBinding);
-
-            mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-                        sldTime.setValue(newValue.toSeconds());
-                        pbTime.setProgress(newValue.toSeconds() / timeBinding.doubleValue());
-                    });
-
-            sldVolume.setValue(mediaPlayer.getVolume() * 100);
-
-            sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
-
-            pbTime.setProgress(0);
 
             setIsPlaying();
         });
@@ -295,6 +274,28 @@ public class VideoPlayerController implements Initializable {
         mediaPlayer = new MediaPlayer(m);
         mvPlayer.setMediaPlayer(mediaPlayer);
         mvPlayer.setPreserveRatio(true);
+
+        DoubleProperty width = mvPlayer.fitWidthProperty();
+        DoubleProperty height = mvPlayer.fitHeightProperty();
+        width.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "width"));
+        height.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "height"));
+
+        DoubleBinding timeBinding = Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
+                mediaPlayer.totalDurationProperty());
+
+        sldTime.maxProperty().bind(timeBinding);
+
+        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+            sldTime.setValue(newValue.toSeconds());
+            pbTime.setProgress(newValue.toSeconds() / timeBinding.doubleValue());
+        });
+
+        sldVolume.setValue(mediaPlayer.getVolume() * 100);
+
+        sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
+
+        pbTime.setProgress(0);
+
     }
 
     private void saveVideo(FileChooser fileChooser){
