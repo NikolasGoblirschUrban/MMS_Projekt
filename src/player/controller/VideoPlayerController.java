@@ -72,18 +72,11 @@ public class VideoPlayerController implements Initializable {
         });
 
         mbMenu.getMenus().get(0).getItems().get(0).setOnAction(event -> {
-            if (mediaPlayer != null) {
-                mediaPlayer.dispose();
-                setIsPlaying();
-            }
             fileChooser.setTitle("Chose Video");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
             selectedFile = fileChooser.showOpenDialog(null);
 
-            Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString());
-            mediaPlayer = new MediaPlayer(m);
-            mvPlayer.setMediaPlayer(mediaPlayer);
-            mvPlayer.setPreserveRatio(true);
+            setMedia();
 
             DoubleProperty width = mvPlayer.fitWidthProperty();
             DoubleProperty height = mvPlayer.fitHeightProperty();
@@ -115,14 +108,6 @@ public class VideoPlayerController implements Initializable {
         });
 
         mbMenu.getMenus().get(0).getItems().get(1).setOnAction(event -> {
-            /*fileChooser.setTitle("Save Video");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
-            try {
-                Files.copy(selectedFile.toPath(), fileChooser.showSaveDialog(null).toPath());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
             saveVideo(fileChooser);
         });
 
@@ -175,7 +160,7 @@ public class VideoPlayerController implements Initializable {
         mbMenu.getMenus().get(1).getItems().get(6).setOnAction(event -> {
             /*TODO Kastner:: Add your Code for Reverse here!*/
         });
-      
+
         mbMenu.getMenus().get(1).getItems().get(7).setOnAction(event -> {
             mediaPlayer.pause();
             fileChooser.setTitle("Choose Savefile");
@@ -194,8 +179,6 @@ public class VideoPlayerController implements Initializable {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
             selectedsecondFile = fileChooser.showOpenDialog(null);
             DialogWindowAddVideo dialog = new DialogWindowAddVideo(selectedFile.getAbsolutePath(), selectedsecondFile.getAbsolutePath(), saveFile.getAbsolutePath());
-
-
         });
 
         RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
@@ -251,15 +234,17 @@ public class VideoPlayerController implements Initializable {
 
     }
 
+    @FXML
+    private void handlePlay() {
+        setIsPlaying();
+    }
+
     public void setMain(Main main) {
         this.main = main;
     }
 
-    public void handlePlay() {
-        setIsPlaying();
-    }
-
-    public void handleState() {
+    @FXML
+    private void handleState() {
         setIsPlaying();
     }
 
@@ -278,7 +263,8 @@ public class VideoPlayerController implements Initializable {
         }
     }
 
-    public void handleMute() {
+    @FXML
+    private void handleMute() {
         if (mediaPlayer != null) {
             if(isMute){
                 mediaPlayer.setMute(false);
@@ -292,13 +278,25 @@ public class VideoPlayerController implements Initializable {
         }
     }
 
-    public void handleTimeChange() {
+    @FXML
+    private void handleTimeChange() {
         if (mediaPlayer != null) {
             mediaPlayer.seek(new Duration(sldTime.getValue() * 1000));
         }
     }
 
-    public void saveVideo(FileChooser fileChooser){
+    private void setMedia() {
+        if (mediaPlayer != null) {
+            mediaPlayer.dispose();
+            setIsPlaying();
+        }
+        Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString());
+        mediaPlayer = new MediaPlayer(m);
+        mvPlayer.setMediaPlayer(mediaPlayer);
+        mvPlayer.setPreserveRatio(true);
+    }
+
+    private void saveVideo(FileChooser fileChooser){
         fileChooser.setTitle("Save Video");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
         try {
