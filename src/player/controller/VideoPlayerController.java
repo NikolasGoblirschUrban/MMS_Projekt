@@ -14,6 +14,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import player.Main;
+import player.model.AudioEditor;
 
 import javax.sound.midi.Track;
 import java.io.File;
@@ -33,6 +34,7 @@ public class VideoPlayerController implements Initializable {
     private boolean isMute;
     private double currentRate;
     private Main main;
+    private AudioEditor audioEditor;
 
 
     @FXML
@@ -55,6 +57,8 @@ public class VideoPlayerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         FileChooser fileChooser = new FileChooser();
+
+        audioEditor = new AudioEditor();
 
         pbTime.prefWidthProperty().bind(apScene.widthProperty());
 
@@ -91,41 +95,22 @@ public class VideoPlayerController implements Initializable {
         });
 
         mbMenu.getMenus().get(1).getItems().get(0).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for add Subtitles here!*/
-            if(selectedFile != null){
-                saveVideo(fileChooser);
-                try {
-                    main.showSubtitles("Add");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //Add Subtitles-Function is not available, because the audio-Modul took too much time.
         });
         mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for edit Subtitles here!*/
-            if(selectedFile != null) {
-                saveVideo(fileChooser);
-                try {
-                    main.showSubtitles("Edit");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //Add Subtitles-Function is not available, because the audio-Modul took too much time.
         });
         mbMenu.getMenus().get(1).getItems().get(2).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for delete Subtitles here!*/
-            if(selectedFile != null) {
-                saveVideo(fileChooser);
-            }
+            //Add Subtitles-Function is not available, because the audio-Modul took too much time.
         });
         mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for edit Audio here!*/
             File editAudioFile;
             if(selectedFile != null) {
                 try {
-                    editAudioFile = main.showEditAudio(selectedFile);
+                    editAudioFile = main.showEditAudio(selectedFile); //Insert Audio in Video -> Open Dialogwindow
                     selectedFile = editAudioFile;
-                    setMedia();
+                    saveVideo(fileChooser); //save it
+                    setMedia(); //update media
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -133,8 +118,9 @@ public class VideoPlayerController implements Initializable {
         });
         mbMenu.getMenus().get(1).getItems().get(5).setOnAction(event -> {
             if(selectedFile != null) {
-                saveVideo(fileChooser);
-                /*TODO Lummi: Add your Code for delete Audio here!*/
+                selectedFile = new File(audioEditor.deleteAudio(selectedFile, "tempvideo.mp4")); //Delete audio
+                saveVideo(fileChooser); //Save video
+                setMedia(); // update media
             }
         });
         mbMenu.getMenus().get(1).getItems().get(6).setOnAction(event -> {

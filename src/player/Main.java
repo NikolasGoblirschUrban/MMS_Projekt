@@ -8,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import player.controller.AudioController;
-import player.controller.SubtitlesController;
 import player.controller.VideoPlayerController;
 
 import java.io.File;
@@ -41,6 +40,7 @@ public class Main extends Application {
         launch(args);
     }
 
+    //method to show the dialog window
     public File showEditAudio(File videofile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/EditAudio.fxml"));
         Parent root = loader.load();
@@ -57,22 +57,5 @@ public class Main extends Application {
 
         dialogStage.showAndWait();
         return audioController.getNewVideoFile();
-    }
-
-    public void showSubtitles(String type) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("view/Subtitles.fxml"));
-
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Subtitles");
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.initOwner(primaryStage);
-        Scene scene = new Scene(root);
-        dialogStage.setScene(scene);
-
-        SubtitlesController subtitlesController = loader.getController();
-        subtitlesController.setType(type);
-
-        dialogStage.showAndWait();
     }
 }

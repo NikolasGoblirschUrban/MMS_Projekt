@@ -57,10 +57,9 @@ public class AudioController implements Initializable{
 
 
     public void handleSubmit(){
-        newVideoFile = new File(audioEditor.deleteAudio(videoFile, "E:\\Dokumente\\OneDrive\\JKU\\test2.mp4"));
-        /*int start = Integer.parseInt(txtStartposition.getText());
+        int start = Integer.parseInt(txtStartposition.getText());
         int end = Integer.parseInt(txtEndposition.getText());
         String newfile = audioEditor.editAudio(videoFile, musicFile, start, end);
-        newVideoFile = new File(newfile);*/
+        newVideoFile = new File(newfile);
     }
 }
