@@ -27,10 +27,13 @@ public class VideoPlayerController implements Initializable {
     private boolean isPlaying = false;
     private MediaPlayer mediaPlayer;
     private File selectedFile;
+    private File saveFile;
+    private File selectedsecondFile;
     private CaptureFrames capturer;
     private boolean isMute;
     private double currentRate;
     private Main main;
+
 
     @FXML
     private MediaView mvPlayer;
@@ -172,11 +175,27 @@ public class VideoPlayerController implements Initializable {
         mbMenu.getMenus().get(1).getItems().get(6).setOnAction(event -> {
             /*TODO Kastner:: Add your Code for Reverse here!*/
         });
-        mbMenu.getMenus().get(1).getItems().get(7).setOnAction(event -> {
-            /*TODO Hansi:: Add your Code for Cutting the Video here!*/
+      
+        mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
+            mediaPlayer.pause();
+            fileChooser.setTitle("Choose Savefile");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
+            saveFile = fileChooser.showSaveDialog(null);
+
+            DialogWindowCutVideo dialog = new DialogWindowCutVideo(selectedFile.getAbsolutePath(),  saveFile.getAbsolutePath());
         });
-        mbMenu.getMenus().get(1).getItems().get(8).setOnAction(event -> {
-            /*TODO Hansi:: Add your Code for Adding Video Part here!*/
+        mbMenu.getMenus().get(1).getItems().get(5).setOnAction(event -> {
+            mediaPlayer.pause();
+            fileChooser.setTitle("Choose Savefile");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
+            saveFile = fileChooser.showSaveDialog(null);
+
+            fileChooser.setTitle("Choose second Video");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
+            selectedsecondFile = fileChooser.showOpenDialog(null);
+            DialogWindowAddVideo dialog = new DialogWindowAddVideo(selectedFile.getAbsolutePath(), selectedsecondFile.getAbsolutePath(), saveFile.getAbsolutePath());
+
+
         });
 
         RadioMenuItem doubleSpeed = ((RadioMenuItem)mbMenu.getMenus().get(2).getItems().get(2));
