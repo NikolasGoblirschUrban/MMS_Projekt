@@ -13,6 +13,7 @@ import javafx.scene.media.MediaView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import player.Main;
 
 import javax.sound.midi.Track;
 import java.io.File;
@@ -31,6 +32,7 @@ public class VideoPlayerController implements Initializable {
     private CaptureFrames capturer;
     private boolean isMute;
     private double currentRate;
+    private Main main;
 
 
     @FXML
@@ -59,7 +61,7 @@ public class VideoPlayerController implements Initializable {
         isMute = false;
         currentRate = 1;
 
-        mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
+        mbMenu.getMenus().get(1).getItems().get(3).setOnAction(event -> {
             DirectoryChooser directoryChooser = new DirectoryChooser();
             File directory = directoryChooser.showDialog(null);
             if(directory != null) {
@@ -113,25 +115,67 @@ public class VideoPlayerController implements Initializable {
         });
 
         mbMenu.getMenus().get(0).getItems().get(1).setOnAction(event -> {
-            fileChooser.setTitle("Save Video");
+            /*fileChooser.setTitle("Save Video");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
             try {
                 Files.copy(selectedFile.toPath(), fileChooser.showSaveDialog(null).toPath());
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
+            saveVideo(fileChooser);
         });
 
         mbMenu.getMenus().get(1).getItems().get(0).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for Subtitles here!*/
+            /*TODO Lummi: Add your Code for add Subtitles here!*/
+            if(selectedFile != null){
+                saveVideo(fileChooser);
+                try {
+                    main.showSubtitles("Add");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mbMenu.getMenus().get(1).getItems().get(1).setOnAction(event -> {
+            /*TODO Lummi: Add your Code for edit Subtitles here!*/
+            if(selectedFile != null) {
+                saveVideo(fileChooser);
+                try {
+                    main.showSubtitles("Edit");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         });
         mbMenu.getMenus().get(1).getItems().get(2).setOnAction(event -> {
-            /*TODO Lummi: Add your Code for Audio here!*/
+            /*TODO Lummi: Add your Code for delete Subtitles here!*/
+            if(selectedFile != null) {
+                saveVideo(fileChooser);
+            }
         });
-        mbMenu.getMenus().get(1).getItems().get(3).setOnAction(event -> {
+        mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
+            /*TODO Lummi: Add your Code for edit Audio here!*/
+            File editAudioFile;
+            if(selectedFile != null) {
+                try {
+                    editAudioFile = main.showEditAudio(selectedFile);
+                    selectedFile = editAudioFile;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        mbMenu.getMenus().get(1).getItems().get(5).setOnAction(event -> {
+            if(selectedFile != null) {
+                saveVideo(fileChooser);
+                /*TODO Lummi: Add your Code for delete Audio here!*/
+            }
+        });
+        mbMenu.getMenus().get(1).getItems().get(6).setOnAction(event -> {
             /*TODO Kastner:: Add your Code for Reverse here!*/
         });
+      
         mbMenu.getMenus().get(1).getItems().get(4).setOnAction(event -> {
             mediaPlayer.pause();
             fileChooser.setTitle("Choose Savefile");
@@ -207,6 +251,10 @@ public class VideoPlayerController implements Initializable {
 
     }
 
+    public void setMain(Main main) {
+        this.main = main;
+    }
+
     public void handlePlay() {
         setIsPlaying();
     }
@@ -247,6 +295,20 @@ public class VideoPlayerController implements Initializable {
     public void handleTimeChange() {
         if (mediaPlayer != null) {
             mediaPlayer.seek(new Duration(sldTime.getValue() * 1000));
+        }
+    }
+
+    public void saveVideo(FileChooser fileChooser){
+        fileChooser.setTitle("Save Video");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Video", "*.mp4"));
+        try {
+            File newFile = new File(String.valueOf(fileChooser.showSaveDialog(null).toPath()));
+            Files.copy(selectedFile.toPath(), newFile.toPath());
+            if(newFile != null){
+                selectedFile = newFile;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
