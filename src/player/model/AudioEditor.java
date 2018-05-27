@@ -9,18 +9,18 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 
+
 public class AudioEditor {
 
+    //This method deletes the audio of a video file
     public String deleteAudio(File videofile, String saveFile){
-        IContainer videoContainer = IContainer.make();
+        IContainer videoContainer = IContainer.make(); //make Container of video
         if(videoContainer.open(videofile.getPath(), IContainer.Type.READ, null) < 0){
             throw new IllegalArgumentException("Cant find " + videofile);
         }
         int numStreamVideo = videoContainer.getNumStreams();
 
-        System.out.println("Number of video streams: "+numStreamVideo );
-
-        int videostreamID = -1; //this is the video stream id
+        int videostreamID = -1;
 
         IStreamCoder videocoder = null;
 
@@ -31,15 +31,15 @@ public class AudioEditor {
             IStreamCoder code = stream.getStreamCoder();
 
             if (code.getCodecType() == ICodec.Type.CODEC_TYPE_VIDEO) {
-                videostreamID = i;
-                videocoder = code;
+                videostreamID = i; //Set VideoStreamID
+                videocoder = code; //set IStreamCoder
             }
         }
         if (videocoder.open(null, null) < 0)
             throw new RuntimeException("Cant open video coder");
 
         IPacket packetvideo = IPacket.make();
-        mWriter.addVideoStream(0, 0, videocoder.getWidth(), videocoder.getHeight());
+        mWriter.addVideoStream(0, 0, videocoder.getWidth(), videocoder.getHeight()); //new Video with only videostream
 
         while(videoContainer.readNextPacket(packetvideo) >= 0) {
 
@@ -48,8 +48,7 @@ public class AudioEditor {
                 //video packet
                 IVideoPicture picture = IVideoPicture.make(videocoder.getPixelType(),
                         videocoder.getWidth(),
-                        videocoder.getHeight());
-                picture.getPts();
+                        videocoder.getHeight()); //get every picture of video
                 int offset = 0;
                 while (offset < packetvideo.getSize()) {
                     int bytesDecoded = videocoder.decodeVideo(picture,
@@ -59,8 +58,7 @@ public class AudioEditor {
                     offset += bytesDecoded;
 
                     if (picture.isComplete()) {
-                        System.out.println(picture.getPixelType());
-                        mWriter.encodeVideo(0, picture);
+                        mWriter.encodeVideo(0, picture); // copy to the new video
 
                     }
                 }
@@ -69,10 +67,11 @@ public class AudioEditor {
         mWriter.close();
         videocoder.close();
         videoContainer.close();
-        System.out.println("Finish");
         return saveFile;
     }
 
+    //the method add audio to video to specified begin and ends at a specified time
+    //function not finished -> Some error occurs -> not enough time to debug
     public String editAudio(File videofile, File audiofile, int begin, int end){
 
         IContainer videoContainer = IContainer.make();
@@ -97,7 +96,7 @@ public class AudioEditor {
         IStreamCoder videoAudioCoder = null;
         IStreamCoder audioCoder= null;
 
-        IMediaWriter mWriter = ToolFactory.makeWriter("E:\\Dokumente\\OneDrive\\JKU\\test.mp4");
+        IMediaWriter mWriter = ToolFactory.makeWriter("tempvideo.mp4");
 
         for(int i=0; i<numStreamVideo; i++) {
             IStream stream = videoContainer.getStream(i);
@@ -162,7 +161,6 @@ public class AudioEditor {
 
                     if (picture.isComplete()) {
                         picturepts = picture.getPts();
-                        System.out.println(picture.getPixelType());
                         mWriter.encodeVideo(0, picture);
 
                     }
@@ -182,7 +180,9 @@ public class AudioEditor {
                     offset += bytesDecodedaudio;
 
                     if (samples.isComplete()) {
-                        if(samples.getPts() < begin*1000000 && samples.getPts() > end*1000000) {
+                        System.out.println(samples.getPts());
+                        if(samples.getPts() < (begin*1000000) || samples.getPts() > (end*1000000)) { //Idea was to compare the Presentation time stamp
+                            // and copy the selected audio only its between the begin and end otherwise the usually audio will copy to the new video
                             mWriter.encodeAudio(1, samples);
                         }
                         else {
@@ -220,7 +220,6 @@ public class AudioEditor {
         videoContainer.close();
         audioCoder.close();
         audioContainer.close();
-        System.out.println("Finish");
-        return "E:\\Dokumente\\OneDrive\\JKU\\test.mp4";
+        return "tempvideo.mp4";
     }
 }
