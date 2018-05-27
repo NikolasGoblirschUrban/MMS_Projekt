@@ -23,9 +23,9 @@ public class AudioController implements Initializable{
     private File newVideoFile;
 
     @FXML
-    private TextField txtStartPosition;
+    private TextField txtStartposition;
     @FXML
-    private TextField txtEndPosition;
+    private TextField txtEndposition;
     @FXML
     private TextField txtMusicFile;
     @FXML
@@ -57,6 +57,10 @@ public class AudioController implements Initializable{
 
 
     public void handleSubmit(){
-        newVideoFile = audioEditor.deleteAudio(videoFile);
+        newVideoFile = new File(audioEditor.deleteAudio(videoFile, "E:\\Dokumente\\OneDrive\\JKU\\test2.mp4"));
+        /*int start = Integer.parseInt(txtStartposition.getText());
+        int end = Integer.parseInt(txtEndposition.getText());
+        String newfile = audioEditor.editAudio(videoFile, musicFile, start, end);
+        newVideoFile = new File(newfile);*/
     }
 }

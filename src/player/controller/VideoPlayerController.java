@@ -146,6 +146,7 @@ public class VideoPlayerController implements Initializable {
                 try {
                     editAudioFile = main.showEditAudio(selectedFile);
                     selectedFile = editAudioFile;
+                    setMedia();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
