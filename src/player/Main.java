@@ -54,7 +54,7 @@ public class Main extends Application {
 
         AudioController audioController = loader.getController();
         audioController.setVideoFile(videofile);
-
+        audioController.setDialogStage(dialogStage);
         dialogStage.showAndWait();
         return audioController.getNewVideoFile();
     }

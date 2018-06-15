@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import player.model.AudioEditor;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class AudioController implements Initializable{
     private AudioEditor audioEditor;
     private File videoFile;
     private File newVideoFile;
+    private Stage dialogStage;
 
     @FXML
     private TextField txtStartposition;
@@ -59,7 +61,12 @@ public class AudioController implements Initializable{
     public void handleSubmit(){
         int start = Integer.parseInt(txtStartposition.getText());
         int end = Integer.parseInt(txtEndposition.getText());
-        String newfile = audioEditor.editAudio(videoFile, musicFile, start, end);
+        String newfile = audioEditor.editAudio(videoFile, musicFile, start, end, "TempAudioVideo.mp4");
         newVideoFile = new File(newfile);
+        dialogStage.close();
+    }
+
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
     }
 }

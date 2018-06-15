@@ -1,8 +1,13 @@
 package player.model;
 
+import com.xuggle.mediatool.IMediaReader;
 import com.xuggle.mediatool.IMediaWriter;
 import com.xuggle.mediatool.ToolFactory;
 import com.xuggle.xuggler.*;
+import player.videoTool.MediaConcatenator;
+import player.videoTool.VideoCombine;
+import player.videoTool.VideoCutter;
+import player.videoTool.VideoData;
 
 import javax.swing.*;
 import java.io.File;
@@ -72,9 +77,9 @@ public class AudioEditor {
 
     //the method add audio to video to specified begin and ends at a specified time
     //function not finished -> Some error occurs -> not enough time to debug
-    public String editAudio(File videofile, File audiofile, int begin, int end){
+    public String editAudio(File videofile, File audiofile, int begin, int end, String destinationUrl){
 
-        IContainer videoContainer = IContainer.make();
+       /* IContainer videoContainer = IContainer.make();
         if(videoContainer.open(videofile.getPath(), IContainer.Type.READ, null) < 0){
             throw new IllegalArgumentException("Cant find " + videofile);
         }
@@ -220,6 +225,55 @@ public class AudioEditor {
         videoContainer.close();
         audioCoder.close();
         audioContainer.close();
-        return "tempvideo.mp4";
+        return "tempvideo.mp4";*/
+        String part1 = VideoCutter.VideoCutBegin(videofile.getPath(), begin);
+        String part2 = VideoCutter.VideoCut(videofile.getPath(), begin, end);
+        String part3 = VideoCutter.VideoCutEnd(videofile.getPath(), end);
+
+        VideoData videoDataPart2 = new VideoData(part2);
+        IMediaReader readerVideo = ToolFactory.makeReader(part2);
+
+        String audioPath = audiofile.getPath();
+        IMediaReader readerAudio = ToolFactory.makeReader(audioPath);
+
+        IContainer audioContainer = IContainer.make(); //make Container of Audio
+        if(audioContainer.open(audiofile.getPath(), IContainer.Type.READ, null) < 0){
+            throw new IllegalArgumentException("Cant find " + videofile);
+        }
+
+        MediaConcatenator concatenator = new MediaConcatenator(videoDataPart2.getStreamInfoAudio().getIndex(),
+                videoDataPart2.getStreamInfoVideo().getIndex());
+
+        concatenator.setToggleChangeTimestamp(false);
+        readerVideo.addListener(concatenator);
+        readerAudio.addListener(concatenator);
+
+
+        IStream audioStream = audioContainer.getStream(0);
+        IStreamCoder audioCoder = audioStream.getStreamCoder();
+
+        IMediaWriter writer = ToolFactory.makeWriter(destinationUrl);
+        concatenator.addListener(writer);
+
+        writer.addVideoStream(videoDataPart2.getStreamInfoVideo().getIndex(), 0, videoDataPart2.getCodecInfoVideo().getWidth(), videoDataPart2.getCodecInfoVideo().getHeight());
+        writer.addAudioStream(videoDataPart2.getStreamInfoAudio().getIndex(), 0, audioCoder.getChannels(),
+                audioCoder.getSampleRate());
+
+        // read packets from the first source file until done
+
+        while (readerVideo.readPacket() == null)
+            ;
+
+        // read packets from the second source file until done
+
+        while (readerAudio.readPacket() == null)
+            ;
+
+        // close the writer
+
+        writer.close();
+
+        VideoCombine.combineThreeEqualVideos(part1, destinationUrl, part3, destinationUrl);
+        return destinationUrl;
     }
 }

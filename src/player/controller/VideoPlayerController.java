@@ -240,6 +240,21 @@ public class VideoPlayerController implements Initializable {
         }
     }
 
+    private void setIsPlaying(boolean value) { //Toggles isPlaying and Button icon
+        if (mediaPlayer != null) {
+            if (!value) {
+                this.isPlaying = false;
+                mediaPlayer.pause();
+                btnPlay.setId("playButton");
+            } else {
+                this.isPlaying = true;
+                mediaPlayer.setRate(currentRate);
+                mediaPlayer.play();
+                btnPlay.setId("pauseButton");
+            }
+        }
+    }
+
     @FXML
     private void handleMute() { //Toggles Mute and mute button icon
         if (mediaPlayer != null) {
@@ -265,7 +280,7 @@ public class VideoPlayerController implements Initializable {
     private void setMedia() {
         if (mediaPlayer != null) {
             mediaPlayer.dispose(); //if video is currently open dispose it
-            setIsPlaying();
+            setIsPlaying(false);
         }
         Media m = new Media(Paths.get(selectedFile.getAbsolutePath()).toUri().toString()); //Video
         mediaPlayer = new MediaPlayer(m); //Set Media for MediaPlayer
@@ -277,22 +292,21 @@ public class VideoPlayerController implements Initializable {
         width.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "width"));
         height.bind(Bindings.selectDouble(mvPlayer.sceneProperty(), "height"));
 
-        DoubleBinding timeBinding = Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
-                mediaPlayer.totalDurationProperty()); //Bind Slider Max to Medias total  time
-
-        sldTime.maxProperty().bind(timeBinding);
-
-        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-            sldTime.setValue(newValue.toSeconds());
-            pbTime.setProgress(newValue.toSeconds() / timeBinding.doubleValue());
-        }); //Listener, when video current time changes update slider and progressbar
-
         sldVolume.setValue(mediaPlayer.getVolume() * 100); //Set Medias Volume to slider for volume
 
         sldVolume.valueProperty().addListener(observable -> mediaPlayer.setVolume(sldVolume.getValue() / 100));
         //Eventhandler updates Volume when volumeslider changes
 
         pbTime.setProgress(0); //Set progressbar to beginning
+
+        DoubleBinding timeBinding = Bindings.createDoubleBinding(() -> mediaPlayer.getTotalDuration().toSeconds(),
+                mediaPlayer.totalDurationProperty()); //Bind Slider Max to Medias total  time
+        sldTime.maxProperty().bind(timeBinding);
+
+        mediaPlayer.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+            sldTime.setValue(newValue.toSeconds());
+            pbTime.setProgress(newValue.toSeconds() / timeBinding.doubleValue());
+        }); //Listener, when video current time changes update slider and progressbar
 
     }
 
